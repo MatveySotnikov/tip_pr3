@@ -5,6 +5,8 @@ import (
 	"sync"
 )
 
+var ErrNotFound = errors.New("not found")
+
 // сущность Task
 type Task struct {
 	ID    int64  `json:"id"`
@@ -38,7 +40,8 @@ func (s *MemoryStore) Get(id int64) (*Task, error) {
 	defer s.mu.RUnlock()
 	t, ok := s.tasks[id]
 	if !ok {
-		return nil, errors.New("not found")
+		// !!! Возвращаем объявленную переменную ErrNotFound !!!
+		return nil, ErrNotFound
 	}
 	return t, nil
 }

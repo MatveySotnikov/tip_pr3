@@ -79,7 +79,7 @@ func (h *Handlers) GetTask(w http.ResponseWriter, r *http.Request) {
 
 	t, err := h.Store.Get(id)
 	if err != nil {
-		if errors.Is(err, errors.New("not found")) {
+		if errors.Is(err, storage.ErrNotFound) {
 			NotFound(w, "task not found")
 			return
 		}
