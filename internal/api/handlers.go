@@ -10,6 +10,8 @@ import (
 	"github.com/MatveySotnikov/tip_pr3/internal/storage"
 )
 
+const MaxTitleLength = 140
+
 type Handlers struct {
 	Store *storage.MemoryStore
 }
@@ -56,6 +58,11 @@ func (h *Handlers) CreateTask(w http.ResponseWriter, r *http.Request) {
 	req.Title = strings.TrimSpace(req.Title)
 	if req.Title == "" {
 		BadRequest(w, "title is required")
+		return
+	}
+
+	if len(req.Title) > MaxTitleLength {
+		BadRequest(w, "title is too long (max 140 characters)")
 		return
 	}
 
